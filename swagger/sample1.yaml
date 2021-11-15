@@ -1,0 +1,161 @@
+# swaggerのバージョン定義
+swagger: "2.0"
+# APIについての情報を書く
+info:
+  # API名
+  title: "商品情報API"
+  # APIのバージョン
+  version: "1.0.0"
+  # APIの説明
+  description: "productsテーブルのレコードを登録・更新・取得・削除するAPI"
+#APIのホスト名 
+host: "localhost:8000"
+#API共通のpathを記載する
+basePath: "/api/v1"
+# 対象のテーブル名?を書く
+tags:
+- name: "products"
+  description: "productsテーブル"
+schemes:
+# スキーマ
+- "http"
+# APIのエントリポイントを記述
+paths:
+  #URIを記載する
+  /products:
+    # GETリクエスト
+    get:
+      # 前述したタグ名
+      tags: 
+      - "products"
+      #概要
+      summary: "商品情報取得"
+      #詳細説明
+      description: "productsテーブルに登録されている商品情報を全件取得する"
+      # content-typeの指定
+      produces: 
+      - "application/json"
+      # レスポンスに関する記述
+      responses:
+        #statusCode200の時
+        200:
+          description: "成功"
+          # レスポンスのbodyについて記述する
+          schema:
+            # jsonの場合,だけ？objectを指定する
+            type: "object"
+            # bodyの中身(ダミー値でいい)
+            properties:
+              id: 
+                #データ型
+                type: "integer"
+                #ダミー値
+                example: "1"
+              name:
+                type: "string"
+                example: "hogehoge"
+    # POSTリクエスト
+    post:
+      tags: 
+      - "products"
+      summary: "商品情報登録"
+      description: "商品情報をproductsテーブルに1件登録する"
+      produces: 
+      - "application/json"
+      # リクエストのbodyについて記述する
+      parameters:
+      # パラメータの名前
+      - name: "body"
+        # パラメータの場所
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              example: "piyopiyo"
+      responses:
+        200:
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              id: 
+                type: "integer"
+                example: "2"
+              name:
+                type: "string"
+                example: "piyopiyo"
+        400:
+          description: "失敗"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                example: "Bad Request"
+  # リクエストによって値が変わるパラメータは`{}`で囲む
+  /model1/{id}:
+    # PUTリクエスト
+    put:
+      tags:
+      - "products"
+      summary: "商品情報更新"
+      description: "URIで指定したidのproductsテーブルの商品情報を更新する"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "更新対象のid"
+        required: true
+        # データ型
+        type: "integer"
+      - name: "body"
+        in: "body"
+        description: "更新内容"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              example: "fugafuga"
+      responses:
+        200:
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              id: 
+                type: "integer"
+                example: "1"
+              name:
+                type: "string"
+                example: "fugafuga"
+        400:
+          description: "失敗"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                example: "Bad Request"
+    # DELETEリクエスト
+    delete:
+      tags:
+      - "products"
+      summary: "商品情報削除"
+      description: "URIで指定したidのproductsテーブルの商品情報を削除する"
+      produces: 
+      - "apllication/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "削除対象の商品id"
+        required: true
+        type: "integer"
+      responses:
+        204:
+          description: "削除の戻り値"
